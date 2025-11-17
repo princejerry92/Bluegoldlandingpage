@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blue Gold</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #0a1628 0%, #1a3a52 50%, #0d2847 100%);
+            color: white;
+        }
+
+        .container {
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated background particles */
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: radial-gradient(circle, rgba(100, 200, 255, 0.8) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+            25% { transform: translate(100px, -100px) scale(1.2); opacity: 0.6; }
+            50% { transform: translate(-50px, -200px) scale(0.8); opacity: 0.4; }
+            75% { transform: translate(-150px, -100px) scale(1.1); opacity: 0.5; }
+        }
+
+        /* Water droplet effect */
+        .droplet {
+            position: absolute;
+            background: radial-gradient(circle, rgba(30, 144, 255, 0.6) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: drop 8s infinite ease-in;
+        }
+
+        @keyframes drop {
+            0% { transform: translateY(-100vh) scale(0.5); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(100vh) scale(1.5); opacity: 0; }
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(10, 22, 40, 0.5);
+            backdrop-filter: blur(10px);
+            animation: slideDown 1s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            background: linear-gradient(45deg, #64c8ff, #1e90ff, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.5); }
+        }
+
+        .menu-icon {
+            width: 30px;
+            height: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+
+        .menu-icon span {
+            width: 100%;
+            height: 3px;
+            background: white;
+            transition: 0.3s;
+        }
+
+        /* Hero section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            padding: 0 20px;
+        }
+
+        .hero-title {
+            font-size: clamp(60px, 12vw, 140px);
+            font-weight: 900;
+            letter-spacing: 8px;
+            margin-bottom: 20px;
+            position: relative;
+            animation: fadeInUp 1.5s ease-out;
+        }
+
+        .hero-title .blue {
+            background: linear-gradient(135deg, #0b547b 0%, #1e90ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        .hero-title .gold {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+            animation: glow 2s ease-in-out infinite 0.5s;
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: drop-shadow(0 0 10px currentColor); }
+            50% { filter: drop-shadow(0 0 30px currentColor); }
+        }
+
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(50px);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0);
+            }
+        }
+
+        .subtitle {
+            font-size: clamp(16px, 3vw, 24px);
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 50px;
+            max-width: 700px;
+            line-height: 1.6;
+            animation: fadeInUp 1.5s ease-out 0.3s backwards;
+        }
+
+        /* CTA Button */
+        .cta-button {
+            padding: 20px 60px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #0a1628;
+            background: linear-gradient(135deg, #64c8ff 0%, #ffd700 100%);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            animation: fadeInUp 1.5s ease-out 0.6s backwards;
+            box-shadow: 0 10px 40px rgba(100, 200, 255, 0.4);
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(100, 200, 255, 0.6);
+        }
+
+        .cta-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        /* Floating water element */
+        .water-element {
+            position: absolute;
+            top: 50%;
+            right: 10%;
+            width: 400px;
+            height: 400px;
+            transform: translateY(-50%);
+            animation: floatRotate 20s infinite ease-in-out;
+            opacity: 0.3;
+        }
+
+        @keyframes floatRotate {
+            0%, 100% { transform: translateY(-50%) rotate(0deg); }
+            50% { transform: translateY(-60%) rotate(180deg); }
+        }
+
+        .water-circle {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid rgba(100, 200, 255, 0.5);
+        }
+
+        .water-circle:nth-child(1) {
+            width: 100%;
+            height: 100%;
+            animation: pulse 4s infinite;
+        }
+
+        .water-circle:nth-child(2) {
+            width: 70%;
+            height: 70%;
+            top: 15%;
+            left: 15%;
+            animation: pulse 4s infinite 1s;
+        }
+
+        .water-circle:nth-child(3) {
+            width: 40%;
+            height: 40%;
+            top: 30%;
+            left: 30%;
+            animation: pulse 4s infinite 2s;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.1); opacity: 0.6; }
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            animation: fadeInUp 1.5s ease-out 1s backwards;
+        }
+
+        .scroll-text {
+            font-size: 12px;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            opacity: 0.7;
+        }
+
+        .scroll-line {
+            width: 2px;
+            height: 50px;
+            background: linear-gradient(to bottom, rgba(100, 200, 255, 0.8), transparent);
+            margin: 0 auto;
+            animation: scrollDown 2s infinite;
+        }
+
+        @keyframes scrollDown {
+            0% { transform: translateY(0); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(20px); opacity: 0; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+            }
+
+            .hero-title {
+                letter-spacing: 4px;
+            }
+
+            .water-element {
+                width: 250px;
+                height: 250px;
+                right: -50px;
+            }
+
+            .cta-button {
+                padding: 15px 40px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Animated particles -->
+        <div class="particles" id="particles"></div>
+        
+        <!-- Header -->
+        <header>
+            <div class="logo">BLUE GOLD</div>
+            <div class="menu-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </header>
+
+        <!-- Hero section -->
+        <section class="hero">
+            <div class="water-element">
+                <div class="water-circle"></div>
+                <div class="water-circle"></div>
+                <div class="water-circle"></div>
+            </div>
+
+            <h1 class="hero-title">
+                <span class="blue">BLUE</span> <span class="gold">GOLD</span>
+            </h1>
+            <p class="subtitle">
+                Transforming investments into wealth. Discover sustainable solutions that flow from innovation to impact.
+            </p>
+            <a href="https://bluegoldventures.lovable.app" class="cta-button">
+                GET STARTED
+            </a>
+
+            <div class="scroll-indicator">
+                <div class="scroll-text">SCROLL TO DISCOVER</div>
+                <div class="scroll-line"></div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Generate particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.className = Math.random() > 0.5 ? 'particle' : 'droplet';
+            particle.style.width = Math.random() * 100 + 20 + 'px';
+            particle.style.height = particle.style.width;
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 5 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Button ripple effect
+        const ctaButton = document.querySelector('.cta-button');
+        ctaButton.addEventListener('click', function(e) {
+            const ripple = document.createElement('span');
+            ripple.style.position = 'absolute';
+            ripple.style.borderRadius = '50%';
+            ripple.style.background = 'rgba(255, 255, 255, 0.6)';
+            ripple.style.width = ripple.style.height = '100px';
+            ripple.style.left = e.offsetX - 50 + 'px';
+            ripple.style.top = e.offsetY - 50 + 'px';
+            ripple.style.animation = 'ripple 0.6s ease-out';
+            this.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+        });
+
+        // Parallax effect
+        document.addEventListener('mousemove', (e) => {
+            const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
+            const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
+            
+            document.querySelector('.water-element').style.transform = 
+                `translateY(-50%) translateX(${moveX}px) translateY(${moveY}px)`;
+        });
+    </script>
+</body>
+</html>
